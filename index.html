@@ -238,11 +238,11 @@
 <div class="absolute top-0 left-0 w-full h-32 bg-gradient-to-b from-secondary-container to-transparent opacity-50"></div>
 <div class="px-8 pt-12 pb-8 flex flex-col items-center text-center">
 <div class="w-24 h-24 bg-tertiary-container rounded-full flex items-center justify-center mb-6 animate-pulse">
-<span class="material-symbols-outlined text-[48px] text-on-tertiary-container" style="font-variation-settings: 'FILL' 1;">emoji_events</span>
+<span class="material-symbols-outlined text-[48px] text-on-tertiary-container" style="font-variation-settings: 'FILL' 1;" id="winIcon">emoji_events</span>
 </div>
-<h3 class="font-headline-lg-mobile text-headline-lg-mobile text-primary mb-1">축하합니다!</h3>
-<p class="font-body-md text-body-md text-on-surface-variant mb-6">이벤트에 당첨되셨습니다.</p>
-<div class="mb-8 w-full bg-surface-container rounded-2xl p-4 flex flex-col items-center">
+<h3 class="font-headline-lg-mobile text-headline-lg-mobile text-primary mb-1" id="winTitle">축하합니다!</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-6" id="winSub">이벤트에 당첨되셨습니다.</p>
+<div class="mb-8 w-full bg-surface-container rounded-2xl p-4 flex flex-col items-center" id="winRankBox">
 <span class="font-headline-lg text-headline-lg text-tertiary mb-2" id="winRank">1등</span>
 <div class="flex items-center gap-2 text-on-surface-variant font-label-md text-label-md border-t border-outline pt-3 w-full justify-center">
 <span id="winUser">—</span>
@@ -251,7 +251,7 @@
 </div>
 </div>
 <div class="bg-primary/5 rounded-xl p-4 mb-8">
-<p class="text-caption font-caption text-primary leading-relaxed">
+<p class="text-caption font-caption text-primary leading-relaxed" id="winMsg">
 <span class="material-symbols-outlined text-[16px] mr-1">photo_camera</span>
                         이 당첨 카드를 캡처해서 도서관으로 가져오면<br/>준비된 선물을 받을 수 있어요!
                     </p>
@@ -263,8 +263,33 @@
 </div>
 </div>
 
+<!-- Screen 5: 신청 내역 (내 신청 / 전체 신청) -->
+<section class="hidden min-h-screen bg-background pb-24" id="screen-list">
+<header class="sticky top-0 z-50 bg-surface/95 backdrop-blur-md">
+<div class="flex items-center justify-between w-full px-4 h-16 border-b border-outline">
+<h2 class="font-headline-md text-headline-md text-primary" id="listTitle">신청 내역</h2>
+<button class="text-[10px] font-bold text-primary underline" onclick="tabSearch()">＋ 도서 신청</button>
+</div>
+</header>
+<main class="max-w-container-max mx-auto px-margin-mobile py-8"><div id="listBody"></div></main>
+</section>
+
+<!-- 하단 탭바 -->
+<nav class="hidden fixed bottom-0 left-0 right-0 z-40 bg-surface border-t border-outline" id="tabbar">
+<div class="max-w-container-max mx-auto grid grid-cols-4">
+<button onclick="tabSearch()" class="flex flex-col items-center gap-0.5 py-2.5 text-on-surface-variant active:bg-surface-container">
+<span class="material-symbols-outlined text-[22px]">add_circle</span><span class="text-[11px] font-label-md">추가신청</span></button>
+<button onclick="navigateTo('screen-intro')" class="flex flex-col items-center gap-0.5 py-2.5 text-on-surface-variant active:bg-surface-container">
+<span class="material-symbols-outlined text-[22px]">home</span><span class="text-[11px] font-label-md">인트로</span></button>
+<button onclick="openList('mine')" class="flex flex-col items-center gap-0.5 py-2.5 text-on-surface-variant active:bg-surface-container">
+<span class="material-symbols-outlined text-[22px]">person</span><span class="text-[11px] font-label-md">내 신청</span></button>
+<button onclick="openList('all')" class="flex flex-col items-center gap-0.5 py-2.5 text-on-surface-variant active:bg-surface-container">
+<span class="material-symbols-outlined text-[22px]">groups</span><span class="text-[11px] font-label-md">전체 신청</span></button>
+</div>
+</nav>
+
 <!-- Toast -->
-<div class="fixed bottom-10 left-1/2 -translate-x-1/2 z-[200] flex flex-col gap-2 pointer-events-none items-center" id="toast-container"></div>
+<div class="fixed bottom-24 left-1/2 -translate-x-1/2 z-[200] flex flex-col gap-2 pointer-events-none items-center" id="toast-container"></div>
 
 <script>
 /* ═══════════════════════════════════════════════════════════════
@@ -282,7 +307,7 @@ const esc = s => (s||"").replace(/[&<>"']/g,c=>(
 const norm = s => (s||"").toLowerCase().replace(/\s+/g,"");   // 띄어쓰기 무시
 const pad2 = n => String(n).padStart(2,"0");
 
-let BOOKS=[], STORE=[], reqSeq=0, timer=null;
+let BOOKS=[], STORE=[], reqSeq=0, listSeq=0, timer=null;
 let userData={ grade:"", cls:"", num:"", name:"", isTeacher:false, hakbeon:"" };
 
 /* 소장 데이터 로드 */
@@ -299,12 +324,14 @@ function setBadge(){
 
 /* 화면 전환 */
 function navigateTo(id){
-  ["screen-intro","screen-info","screen-main"].forEach(s=>$(s).classList.add("hidden"));
+  ["screen-intro","screen-info","screen-main","screen-list"].forEach(s=>{const el=$(s); if(el) el.classList.add("hidden");});
   $(id).classList.remove("hidden");
   window.scrollTo(0,0);
+  const tb=$("tabbar"); if(tb) tb.classList.toggle("hidden", (id==="screen-intro"||id==="screen-info"));
   if(id==="screen-info") prefillInfo();
   if(id==="screen-main"){ const si=$("searchInput"); if(si) setTimeout(()=>si.focus(),60); }
 }
+function tabSearch(){ navigateTo("screen-main"); clearSearch(); }
 
 /* 학년 선택 */
 function selectGrade(grade, btn){
@@ -378,16 +405,11 @@ function renderCollection(q){
 }
 function collectionCard(b){
   const meta=[b.a,b.p].filter(Boolean).join(" · ");
-  let status;
-  if(b.s==="대출가능") status='<span class="px-2 py-0.5 rounded text-[11px] font-bold border border-outline text-on-surface">대출가능</span>';
-  else if(b.s==="대출중") status='<span class="px-2 py-0.5 rounded text-[11px] font-bold bg-on-surface text-background">대출중</span>';
-  else status='<span class="px-2 py-0.5 rounded text-[11px] font-bold border border-outline text-on-surface">'+(esc(b.s)||"확인필요")+'</span>';
   return '<div class="bg-[#fcf9f0] p-5 rounded-2xl book-card-shadow border border-outline flex gap-4 transition-soft hover:-translate-y-1"><div class="flex-1">'
     +'<h4 class="font-headline-md text-headline-md text-on-surface mb-1 line-clamp-2">'+esc(b.t)+'</h4>'
-    +'<p class="text-caption font-caption text-on-surface-variant mb-4">'+esc(meta)+'</p>'
-    +'<div class="flex flex-wrap gap-2 items-center">'
-    +(b.c?'<span class="px-2 py-0.5 rounded text-[11px] font-bold border border-outline text-on-surface">'+esc(b.c)+'</span>':'')
-    +status+'</div></div></div>';
+    +'<p class="text-caption font-caption text-on-surface-variant'+(b.c?' mb-3':'')+'">'+esc(meta)+'</p>'
+    +(b.c?'<div class="flex flex-wrap gap-2 items-center"><span class="px-2 py-0.5 rounded text-[11px] font-bold border border-outline text-on-surface">'+esc(b.c)+'</span></div>':'')
+    +'</div></div>';
 }
 
 /* 알라딘(서점) 검색 */
@@ -443,20 +465,63 @@ function saveApplication(btn){
       btn.classList.remove("bg-secondary","text-on-secondary");
       btn.classList.add("bg-surface-container-highest","text-outline");
       const tg=card.querySelector(".apply-toggle"); if(tg){ tg.disabled=true; tg.classList.add("opacity-50"); }
-      showToast("신청 완료! 이벤트에 응모되었어요.");
-      if(res.win) showWinner(res);
+      if(res.win) showWinner(res); else showLose();
     }else{ showToast(res.error||"저장에 실패했어요.","error"); btn.disabled=false; btn.innerHTML='<span class="material-symbols-outlined text-[18px]">save</span> 신청 저장'; }
   }).catch(()=>{ showToast("연결 오류로 저장하지 못했어요.","error"); btn.disabled=false; btn.innerHTML='<span class="material-symbols-outlined text-[18px]">save</span> 신청 저장'; });
 }
 
 /* 당첨 카드 */
 function showWinner(res){
+  $("winIcon").textContent="emoji_events";
+  $("winTitle").textContent="축하합니다!";
+  $("winSub").textContent="이벤트에 당첨되셨습니다.";
+  $("winRankBox").style.display="";
   $("winRank").textContent=(res.rank||"")+"등";
   $("winUser").textContent=(res.hakbeon||userData.hakbeon)+" · "+(res.name||userData.name);
   $("winNo").textContent="응모번호 #"+(res.order||"");
+  $("winMsg").innerHTML='<span class="material-symbols-outlined text-[16px] mr-1">photo_camera</span> 이 당첨 카드를 캡처해서 도서관으로 가져오면<br/>준비된 선물을 받을 수 있어요!';
+  $("winning-overlay").classList.remove("hidden");
+}
+/* 미당첨 카드 (당첨 카드와 같은 디자인) */
+function showLose(){
+  $("winIcon").textContent="sentiment_satisfied";
+  $("winTitle").textContent="다음 기회에!";
+  $("winSub").textContent="아쉽지만 이번엔 당첨되지 않았어요.";
+  $("winRankBox").style.display="none";
+  $("winMsg").innerHTML='그래도 신청은 정상 접수됐어요. 📚<br/>다음 이벤트를 기대해 주세요!';
   $("winning-overlay").classList.remove("hidden");
 }
 function closeOverlay(){ $("winning-overlay").classList.add("hidden"); }
+
+/* 신청 내역 (내 신청 / 전체 신청) */
+function openList(mode){
+  navigateTo("screen-list");
+  $("listTitle").textContent = mode==="mine" ? "내 신청 내역" : "전체 신청 내역";
+  const el=$("listBody");
+  if(!CONFIG.gasUrl){ el.innerHTML=noteCard("서버 연결 후 이용할 수 있어요."); return; }
+  el.innerHTML='<div class="flex items-center justify-center gap-2 py-16 text-outline font-body-md"><span class="material-symbols-outlined animate-spin">progress_activity</span> 불러오는 중…</div>';
+  const my=++listSeq;
+  api({action:"list", scope:mode, hakbeon:userData.hakbeon, name:userData.name}).then(res=>{
+    if(my!==listSeq) return;
+    if(!res.ok){ el.innerHTML=noteCard("불러오지 못했어요: "+esc(res.error||"")); return; }
+    const rows=res.rows||[];
+    if(!rows.length){ el.innerHTML=noteCard(mode==="mine" ? "아직 신청한 도서가 없어요." : "아직 신청 내역이 없어요."); return; }
+    el.innerHTML='<div class="mb-4 text-caption font-caption text-on-surface-variant">총 '+rows.length.toLocaleString()+'건</div>'
+      +'<div class="space-y-3">'+rows.map(r=>listCard(r,mode)).join("")+'</div>';
+  }).catch(()=>{ if(my!==listSeq) return; el.innerHTML=noteCard("연결 오류가 발생했어요."); });
+}
+function winBadge(win){
+  if(win) return '<span class="px-2.5 py-1 rounded-full text-[11px] font-bold bg-on-surface text-background whitespace-nowrap">🏆 '+esc(win)+' 당첨</span>';
+  return '<span class="px-2.5 py-1 rounded-full text-[11px] font-bold border border-outline text-on-surface-variant whitespace-nowrap">미당첨</span>';
+}
+function listCard(r,mode){
+  return '<div class="bg-[#fcf9f0] p-4 rounded-2xl border border-outline flex items-center justify-between gap-3">'
+    +'<div class="min-w-0">'
+    +(mode==="all" ? '<div class="text-caption font-caption text-on-surface-variant mb-0.5">'+esc(r.name)+'</div>' : '')
+    +'<div class="font-headline-md text-headline-md text-on-surface line-clamp-1">'+esc(r.title)+'</div>'
+    +(mode==="mine"&&r.date ? '<div class="text-caption font-caption text-on-surface-variant mt-0.5">'+esc(r.date)+'</div>' : '')
+    +'</div><div class="flex-shrink-0">'+winBadge(r.win)+'</div></div>';
+}
 
 /* 서버 통신 */
 function api(payload){
