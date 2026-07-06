@@ -216,7 +216,7 @@
                             우리 학교 소장 <span class="text-primary font-bold" id="collectionCount"></span>
 </h3>
 </div>
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="collectionList"></div>
+<div class="space-y-2" id="collectionList"></div>
 </section>
 <section>
 <div class="flex items-center justify-between mb-6">
@@ -405,11 +405,11 @@ function renderCollection(q){
 }
 function collectionCard(b){
   const meta=[b.a,b.p].filter(Boolean).join(" · ");
-  return '<div class="bg-[#fcf9f0] p-5 rounded-2xl book-card-shadow border border-outline flex gap-4 transition-soft hover:-translate-y-1"><div class="flex-1">'
-    +'<h4 class="font-headline-md text-headline-md text-on-surface mb-1 line-clamp-2">'+esc(b.t)+'</h4>'
-    +'<p class="text-caption font-caption text-on-surface-variant'+(b.c?' mb-3':'')+'">'+esc(meta)+'</p>'
-    +(b.c?'<div class="flex flex-wrap gap-2 items-center"><span class="px-2 py-0.5 rounded text-[11px] font-bold border border-outline text-on-surface">'+esc(b.c)+'</span></div>':'')
-    +'</div></div>';
+  return '<div class="bg-[#fcf9f0] border border-outline rounded-xl px-4 py-2.5 flex items-center justify-between gap-3">'
+    +'<div class="truncate min-w-0"><span class="font-label-md text-label-md text-on-surface">'+esc(b.t)+'</span>'
+    +(meta?' <span class="text-caption font-caption text-on-surface-variant">'+esc(meta)+'</span>':'')+'</div>'
+    +(b.c?'<span class="flex-shrink-0 px-2.5 py-0.5 rounded-full text-[11px] font-bold border border-outline text-on-surface whitespace-nowrap">'+esc(b.c)+'</span>':'')
+    +'</div>';
 }
 
 /* 알라딘(서점) 검색 */
@@ -427,7 +427,8 @@ function searchAladin(q){
   }).catch(()=>{ if(my!==reqSeq) return; el.innerHTML=noteCard("연결 오류가 발생했어요. 잠시 후 다시 시도해 주세요."); });
 }
 function aladinCard(it,i){
-  const meta=[it.author,it.publisher].filter(Boolean).join(" · ");
+  const year=(it.pubDate||"").slice(0,4);
+  const meta=[it.author,it.publisher,year?year+"년":""].filter(Boolean).join(" · ");
   const price=it.price?('<p class="text-label-md font-label-md text-primary">정가 '+Number(it.price).toLocaleString()+'원</p>'):'';
   const img=it.cover?('<img class="w-full h-full object-cover" src="'+esc(it.cover)+'" alt=""/>'):'';
   const link=it.link?('<a class="text-outline hover:text-primary transition-colors flex-shrink-0 ml-2" href="'+esc(it.link)+'" target="_blank" rel="noopener"><span class="material-symbols-outlined text-[20px]">open_in_new</span></a>'):'';
@@ -507,7 +508,7 @@ function openList(mode){
     const rows=res.rows||[];
     if(!rows.length){ el.innerHTML=noteCard(mode==="mine" ? "아직 신청한 도서가 없어요." : "아직 신청 내역이 없어요."); return; }
     el.innerHTML='<div class="mb-4 text-caption font-caption text-on-surface-variant">총 '+rows.length.toLocaleString()+'건</div>'
-      +'<div class="space-y-3">'+rows.map(r=>listCard(r,mode)).join("")+'</div>';
+      +'<div class="space-y-2">'+rows.map(r=>listCard(r,mode)).join("")+'</div>';
   }).catch(()=>{ if(my!==listSeq) return; el.innerHTML=noteCard("연결 오류가 발생했어요."); });
 }
 function winBadge(win){
@@ -515,12 +516,12 @@ function winBadge(win){
   return '<span class="px-2.5 py-1 rounded-full text-[11px] font-bold border border-outline text-on-surface-variant whitespace-nowrap">미당첨</span>';
 }
 function listCard(r,mode){
-  return '<div class="bg-[#fcf9f0] p-4 rounded-2xl border border-outline flex items-center justify-between gap-3">'
-    +'<div class="min-w-0">'
-    +(mode==="all" ? '<div class="text-caption font-caption text-on-surface-variant mb-0.5">'+esc(r.name)+'</div>' : '')
-    +'<div class="font-headline-md text-headline-md text-on-surface line-clamp-1">'+esc(r.title)+'</div>'
-    +(mode==="mine"&&r.date ? '<div class="text-caption font-caption text-on-surface-variant mt-0.5">'+esc(r.date)+'</div>' : '')
-    +'</div><div class="flex-shrink-0">'+winBadge(r.win)+'</div></div>';
+  const left = mode==="all"
+    ? '<span class="text-caption font-caption text-on-surface-variant">'+esc(r.name)+'</span> <span class="font-label-md text-label-md text-on-surface">'+esc(r.title)+'</span>'
+    : '<span class="font-label-md text-label-md text-on-surface">'+esc(r.title)+'</span>'+(r.date?' <span class="text-caption font-caption text-on-surface-variant">'+esc(r.date)+'</span>':'');
+  return '<div class="bg-[#fcf9f0] border border-outline rounded-xl px-4 py-2.5 flex items-center justify-between gap-3">'
+    +'<div class="truncate min-w-0">'+left+'</div>'
+    +'<div class="flex-shrink-0">'+winBadge(r.win)+'</div></div>';
 }
 
 /* 서버 통신 */
