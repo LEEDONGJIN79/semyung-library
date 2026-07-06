@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="ko"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>세명고등학교 도서관 - 도서신청 이벤트</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&amp;family=Noto+Sans+KR:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "background": "#efe7d3",
+                    "on-background": "#1b1811",
+                    "surface": "#f4eede",
+                    "surface-bright": "#f4eede",
+                    "surface-dim": "#ded3ba",
+                    "surface-variant": "#e7dec8",
+                    "surface-container-lowest": "#fcf9f0",
+                    "surface-container-low": "#ece4d0",
+                    "surface-container": "#e7dec8",
+                    "surface-container-high": "#ded3ba",
+                    "surface-container-highest": "#d5c9ac",
+                    "on-surface": "#1b1811",
+                    "on-surface-variant": "#4c4838",
+                    "outline": "#1b1811",
+                    "outline-variant": "#1b1811",
+                    "primary": "#1b1811",
+                    "on-primary": "#f4eede",
+                    "primary-container": "#1b1811",
+                    "on-primary-container": "#f4eede",
+                    "primary-fixed": "#e7dec8",
+                    "primary-fixed-dim": "#ded3ba",
+                    "on-primary-fixed": "#1b1811",
+                    "on-primary-fixed-variant": "#1b1811",
+                    "inverse-primary": "#f4eede",
+                    "inverse-surface": "#1b1811",
+                    "inverse-on-surface": "#f4eede",
+                    "surface-tint": "#1b1811",
+                    "secondary": "#1b1811",
+                    "on-secondary": "#f4eede",
+                    "secondary-container": "#efe7d3",
+                    "on-secondary-container": "#1b1811",
+                    "secondary-fixed": "#e7dec8",
+                    "secondary-fixed-dim": "#ded3ba",
+                    "on-secondary-fixed": "#1b1811",
+                    "on-secondary-fixed-variant": "#1b1811",
+                    "tertiary": "#1b1811",
+                    "on-tertiary": "#f4eede",
+                    "tertiary-container": "#efe7d3",
+                    "on-tertiary-container": "#1b1811",
+                    "tertiary-fixed": "#e7dec8",
+                    "tertiary-fixed-dim": "#ded3ba",
+                    "on-tertiary-fixed": "#1b1811",
+                    "on-tertiary-fixed-variant": "#1b1811",
+                    "error": "#1b1811",
+                    "on-error": "#f4eede",
+                    "error-container": "#efe7d3",
+                    "on-error-container": "#1b1811"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "margin-desktop": "40px",
+                    "unit": "4px",
+                    "container-max": "1200px",
+                    "gutter": "16px",
+                    "margin-mobile": "20px"
+            },
+            "fontFamily": {
+                    "headline-md": ["Plus Jakarta Sans"],
+                    "label-md": ["Plus Jakarta Sans"],
+                    "body-md": ["Noto Sans KR"],
+                    "body-lg": ["Noto Sans KR"],
+                    "caption": ["Noto Sans KR"],
+                    "headline-lg": ["Plus Jakarta Sans"],
+                    "headline-lg-mobile": ["Plus Jakarta Sans"]
+            },
+            "fontSize": {
+                    "headline-md": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                    "label-md": ["14px", {"lineHeight": "20px", "fontWeight": "600"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "caption": ["12px", {"lineHeight": "16px", "fontWeight": "400"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "headline-lg-mobile": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "700"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body { font-family: 'Noto Sans KR', sans-serif; background-color: #efe7d3; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; vertical-align: middle; }
+        .book-card-shadow { box-shadow: none; }
+        .transition-soft { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        .shelf-gradient { background: linear-gradient(180deg, rgba(248, 249, 250, 0) 0%, rgba(248, 249, 250, 1) 85%); }
+        .text-glow { text-shadow: 0 0 15px rgba(167, 200, 255, 0.4); }
+    </style>
+<style>
+    body { min-height: max(884px, 100dvh); }
+  </style>
+</head>
+<body class="text-on-surface">
+<!-- Screen 1: Intro Landing -->
+<section class="relative min-h-screen flex flex-col overflow-hidden bg-background" id="screen-intro">
+
+<div class="relative z-10 flex flex-col items-center justify-start px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto text-center pt-10">
+<div class="mb-6 px-4 py-1.5 bg-primary-container text-on-primary-container rounded-full inline-flex items-center gap-2 animate-bounce">
+<span class="material-symbols-outlined text-[18px]">event</span>
+<span class="font-label-md text-label-md">2026 · 도서신청 이벤트</span>
+</div>
+<h1 class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-primary mb-4 leading-tight">
+                세명고등학교 1차<br class="md:hidden"/> 도서신청 이벤트
+            </h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-lg mb-12">
+                읽고 싶은 책을 신청하면 추첨을 통해<br class="hidden md:block"/> 학생 여러분께 특별한 선물을 드려요.
+            </p>
+<button class="group relative px-10 py-5 bg-primary text-on-primary rounded-xl font-headline-md text-headline-md flex items-center gap-3 transition-soft hover:scale-105 active:scale-95" onclick="navigateTo('screen-info')">
+<span>시작하기</span>
+<span class="material-symbols-outlined group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</button>
+</div>
+<div id="shelfArt" class="relative z-10 w-full flex-1 flex items-end justify-center"></div>
+<footer class="relative z-10 py-8 text-center border-t border-outline-variant bg-surface/50 backdrop-blur-sm">
+<p class="font-label-md text-label-md text-outline font-bold tracking-widest uppercase">세명고등학교 도서관</p>
+</footer>
+</section>
+
+<!-- Screen 2: Info Input -->
+<section class="hidden min-h-screen bg-background flex flex-col" id="screen-info">
+<header class="flex items-center w-full px-4 h-16 sticky top-0 z-50 bg-surface border-b border-outline-variant">
+<button class="p-2 hover:bg-surface-container rounded-full transition-colors" onclick="navigateTo('screen-intro')">
+<span class="material-symbols-outlined text-primary">arrow_back</span>
+</button>
+<h2 class="ml-4 font-headline-md text-headline-md text-primary font-bold">세명고등학교 도서관</h2>
+</header>
+<main class="flex-1 max-w-md mx-auto w-full px-margin-mobile py-10">
+<div class="mb-10">
+<h3 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface mb-2">정보 입력</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">도서 신청 전에 먼저 정보를 입력해 주세요.</p>
+</div>
+<form class="space-y-8" id="infoForm" onsubmit="return false;">
+<div class="space-y-3">
+<label class="font-label-md text-label-md text-primary flex items-center gap-1">
+<span class="material-symbols-outlined text-[18px]">school</span> 학년 선택
+                    </label>
+<div class="grid grid-cols-4 gap-2">
+<button class="grade-btn py-3 rounded-lg border border-outline-variant text-center transition-soft hover:bg-primary-fixed hover:border-primary" onclick="selectGrade('1', this)" type="button">1학년</button>
+<button class="grade-btn py-3 rounded-lg border border-outline-variant text-center transition-soft hover:bg-primary-fixed hover:border-primary" onclick="selectGrade('2', this)" type="button">2학년</button>
+<button class="grade-btn py-3 rounded-lg border border-outline-variant text-center transition-soft hover:bg-primary-fixed hover:border-primary" onclick="selectGrade('3', this)" type="button">3학년</button>
+<button class="grade-btn py-3 rounded-lg border border-outline-variant text-center transition-soft hover:bg-primary-fixed hover:border-primary" onclick="selectGrade('teacher', this)" type="button">교사</button>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-4 transition-all duration-300" id="studentFields">
+<div class="space-y-3">
+<label class="font-label-md text-label-md text-primary">반</label>
+<input class="w-full p-4 rounded-xl border border-outline-variant focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all" id="classInput" placeholder="00" type="number"/>
+</div>
+<div class="space-y-3">
+<label class="font-label-md text-label-md text-primary">번호</label>
+<input class="w-full p-4 rounded-xl border border-outline-variant focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all" id="numInput" placeholder="00" type="number"/>
+</div>
+</div>
+<div class="space-y-3">
+<label class="font-label-md text-label-md text-primary">이름</label>
+<input class="w-full p-4 rounded-xl border border-outline-variant focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all" id="nameInput" placeholder="실명을 입력해 주세요" type="text"/>
+</div>
+<button class="w-full py-5 bg-primary text-on-primary rounded-xl font-headline-md text-headline-md transition-soft active:scale-95 mt-10" onclick="validateAndSubmit()" type="button">
+                    확인
+                </button>
+</form>
+</main>
+</section>
+
+<!-- Screen 3: Main (Search & Apply) -->
+<section class="hidden min-h-screen bg-background pb-24" id="screen-main">
+<header class="sticky top-0 z-50 bg-surface/95 backdrop-blur-md">
+<div class="flex items-center justify-between w-full px-4 h-16 border-b border-outline-variant">
+<div class="flex flex-col">
+<span class="text-[10px] font-bold text-primary tracking-tighter uppercase leading-none mb-0.5">Semyung High</span>
+<h2 class="font-headline-md text-headline-md text-primary leading-none">도서 신청</h2>
+</div>
+<div class="flex items-center gap-2">
+<div class="px-3 py-1 bg-surface-container rounded-full flex items-center gap-2">
+<span class="font-label-md text-label-md text-on-surface" id="userBadge">—</span>
+<button class="text-[10px] font-bold text-primary underline" onclick="navigateTo('screen-info')">변경</button>
+</div>
+</div>
+</div>
+<div class="px-margin-mobile py-4 bg-surface">
+<div class="relative max-w-container-max mx-auto">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline">search</span>
+<input class="w-full pl-12 pr-12 py-4 bg-surface-container-low rounded-2xl border border-outline focus:ring-2 focus:ring-primary transition-all font-body-md text-body-md" id="searchInput" placeholder="찾는 책 제목 (띄어쓰기는 무시돼요)" type="text"/>
+<button class="absolute right-4 top-1/2 -translate-y-1/2 text-outline hover:text-primary" onclick="clearSearch()">
+<span class="material-symbols-outlined">close</span>
+</button>
+</div>
+</div>
+</header>
+<main class="max-w-container-max mx-auto px-margin-mobile py-8">
+<div class="flex flex-col items-center justify-center py-20 text-center" id="initialSearchState">
+<span class="material-symbols-outlined text-[64px] text-surface-container-highest mb-4">menu_book</span>
+<p class="font-body-lg text-body-lg text-outline">책 제목을 입력하면<br/>소장 도서와 신청 가능 도서를 찾아드려요.</p>
+</div>
+<div class="hidden space-y-12" id="searchResults">
+<section>
+<div class="flex items-center justify-between mb-6">
+<h3 class="font-headline-md text-headline-md text-on-surface flex items-center gap-2">
+                            우리 학교 소장 <span class="text-primary font-bold" id="collectionCount"></span>
+</h3>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="collectionList"></div>
+</section>
+<section>
+<div class="flex items-center justify-between mb-6">
+<h3 class="font-headline-md text-headline-md text-on-surface">서점 검색 결과 <span class="text-outline text-label-md font-normal ml-2">신청할 수 있어요</span></h3>
+</div>
+<div class="space-y-4" id="aladinList"></div>
+</section>
+</div>
+</main>
+<div class="text-center py-10 opacity-60">
+<p class="text-caption font-caption">희망하는 도서가 학교에 없다면 지금 바로 신청하고 경품 이벤트에 참여하세요!</p>
+</div>
+</section>
+
+<!-- Screen 4: Winning Overlay -->
+<div class="hidden fixed inset-0 z-[100] flex items-center justify-center px-6" id="winning-overlay">
+<div class="absolute inset-0 bg-primary/40 backdrop-blur-md"></div>
+<div class="relative bg-[#fcf9f0] w-full max-w-sm rounded-[32px] overflow-hidden border border-outline">
+<div class="absolute top-0 left-0 w-full h-32 bg-gradient-to-b from-secondary-container to-transparent opacity-50"></div>
+<div class="px-8 pt-12 pb-8 flex flex-col items-center text-center">
+<div class="w-24 h-24 bg-tertiary-container rounded-full flex items-center justify-center mb-6 animate-pulse">
+<span class="material-symbols-outlined text-[48px] text-on-tertiary-container" style="font-variation-settings: 'FILL' 1;">emoji_events</span>
+</div>
+<h3 class="font-headline-lg-mobile text-headline-lg-mobile text-primary mb-1">축하합니다!</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-6">이벤트에 당첨되셨습니다.</p>
+<div class="mb-8 w-full bg-surface-container rounded-2xl p-4 flex flex-col items-center">
+<span class="font-headline-lg text-headline-lg text-tertiary mb-2" id="winRank">1등</span>
+<div class="flex items-center gap-2 text-on-surface-variant font-label-md text-label-md border-t border-outline pt-3 w-full justify-center">
+<span id="winUser">—</span>
+<span class="text-outline">|</span>
+<span class="text-primary font-bold" id="winNo">응모번호 #0</span>
+</div>
+</div>
+<div class="bg-primary/5 rounded-xl p-4 mb-8">
+<p class="text-caption font-caption text-primary leading-relaxed">
+<span class="material-symbols-outlined text-[16px] mr-1">photo_camera</span>
+                        이 당첨 카드를 캡처해서 도서관으로 가져오면<br/>준비된 선물을 받을 수 있어요!
+                    </p>
+</div>
+<button class="w-full py-4 bg-primary text-on-primary rounded-xl font-headline-md text-headline-md transition-soft active:scale-95" onclick="closeOverlay()">
+                    확인
+                </button>
+</div>
+</div>
+</div>
+
+<!-- Toast -->
+<div class="fixed bottom-10 left-1/2 -translate-x-1/2 z-[200] flex flex-col gap-2 pointer-events-none items-center" id="toast-container"></div>
+
+<script>
+/* ═══════════════════════════════════════════════════════════════
+   ⚙️  설정 — 앱스 스크립트 배포 주소 한 줄만 채우면 됩니다
+   ═══════════════════════════════════════════════════════════════ */
+const CONFIG = {
+  schoolName: "세명고등학교 도서관",
+  gasUrl: "https://script.google.com/macros/s/AKfycbz4UOsmoQdLk8LpLMbRwgf-krPw2ueLM4AuX5kOkQ3hnEMpkpUMRpiFmStz2RI9FKes/exec"
+};
+/* ═══════════════════════════════════════════════════════════════ */
+
+const $ = id => document.getElementById(id);
+const esc = s => (s||"").replace(/[&<>"']/g,c=>(
+  {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]));
+const norm = s => (s||"").toLowerCase().replace(/\s+/g,"");   // 띄어쓰기 무시
+const pad2 = n => String(n).padStart(2,"0");
+
+let BOOKS=[], STORE=[], reqSeq=0, timer=null;
+let userData={ grade:"", cls:"", num:"", name:"", isTeacher:false, hakbeon:"" };
+
+/* 소장 데이터 로드 */
+fetch("books.json").then(r=>{ if(!r.ok) throw 0; return r.json(); })
+  .then(d=>{ BOOKS=d.books||[]; }).catch(()=>{ BOOKS=[]; });
+
+/* 저장된 신원 */
+try{ const s=JSON.parse(localStorage.getItem("semyung_me")||"null"); if(s&&s.name){ userData=s; setBadge(); } }catch(_){}
+
+function setBadge(){
+  const id = userData.isTeacher ? "교사" : userData.hakbeon;
+  const b=$("userBadge"); if(b) b.textContent = userData.name + " (" + id + ")";
+}
+
+/* 화면 전환 */
+function navigateTo(id){
+  ["screen-intro","screen-info","screen-main"].forEach(s=>$(s).classList.add("hidden"));
+  $(id).classList.remove("hidden");
+  window.scrollTo(0,0);
+  if(id==="screen-info") prefillInfo();
+  if(id==="screen-main"){ const si=$("searchInput"); if(si) setTimeout(()=>si.focus(),60); }
+}
+
+/* 학년 선택 */
+function selectGrade(grade, btn){
+  userData.grade=grade; userData.isTeacher=(grade==="teacher");
+  document.querySelectorAll(".grade-btn").forEach(b=>b.classList.remove("bg-primary","text-on-primary","border-primary"));
+  if(btn) btn.classList.add("bg-primary","text-on-primary","border-primary");
+  const sf=$("studentFields");
+  if(userData.isTeacher) sf.classList.add("opacity-30","pointer-events-none");
+  else sf.classList.remove("opacity-30","pointer-events-none");
+}
+function prefillInfo(){
+  if(!userData.grade) return;
+  $("nameInput").value=userData.name||"";
+  $("classInput").value=userData.cls||"";
+  $("numInput").value=userData.num||"";
+  const order={"1":0,"2":1,"3":2,"teacher":3};
+  const btns=document.querySelectorAll(".grade-btn");
+  const i=order[userData.grade];
+  if(i!=null && btns[i]) selectGrade(userData.grade, btns[i]);
+}
+
+/* 토스트 */
+function showToast(message, type){
+  const c=$("toast-container"); const t=document.createElement("div");
+  t.className="px-6 py-3 rounded-full text-white font-label-md text-label-md transition-all duration-300 "+(type==="error"?"bg-error":"bg-primary");
+  t.style.opacity="0"; t.style.transform="translateY(10px)"; t.textContent=message;
+  c.appendChild(t);
+  requestAnimationFrame(()=>{ t.style.opacity="1"; t.style.transform="translateY(0)"; });
+  setTimeout(()=>{ t.style.opacity="0"; t.style.transform="translateY(10px)"; setTimeout(()=>t.remove(),300); }, 2800);
+}
+
+/* 신원 확인 */
+function validateAndSubmit(){
+  userData.name=$("nameInput").value.trim();
+  userData.cls=$("classInput").value.trim();
+  userData.num=$("numInput").value.trim();
+  if(!userData.grade) return showToast("학년을 선택해 주세요.","error");
+  if(!userData.name) return showToast("이름을 입력해 주세요.","error");
+  if(!userData.isTeacher && (!userData.cls || !userData.num)) return showToast("반과 번호를 입력해 주세요.","error");
+  userData.hakbeon = userData.isTeacher ? "교사" : (userData.grade + pad2(userData.cls) + pad2(userData.num));
+  try{ localStorage.setItem("semyung_me", JSON.stringify(userData)); }catch(_){}
+  setBadge();
+  navigateTo("screen-main");
+  showToast("반갑습니다, " + userData.name + "님!");
+}
+
+/* 검색 */
+function doSearch(){
+  const q=$("searchInput").value.trim();
+  if(q){ $("initialSearchState").classList.add("hidden"); $("searchResults").classList.remove("hidden"); renderCollection(q); searchAladin(q); }
+  else { $("initialSearchState").classList.remove("hidden"); $("searchResults").classList.add("hidden"); }
+}
+function clearSearch(){ $("searchInput").value=""; doSearch(); }
+
+function noteCard(msg, extra){
+  return '<div class="'+(extra||"")+' bg-[#fcf9f0] p-5 rounded-2xl book-card-shadow border border-outline text-body-md font-body-md text-on-surface-variant">'+msg+'</div>';
+}
+
+/* 소장 여부 */
+function renderCollection(q){
+  const terms=q.split(/\s+/).filter(Boolean);
+  const keys=terms.map(norm).filter(Boolean);
+  const joined=norm(q);
+  const list = BOOKS.length ? BOOKS.filter(b=>{ const hay=norm(b.t+" "+b.a+" "+b.p); return keys.every(k=>hay.includes(k)) || hay.includes(joined); }) : [];
+  $("collectionCount").textContent = !BOOKS.length ? "…" : (list.length ? list.length.toLocaleString()+"권" : "없음");
+  const el=$("collectionList");
+  const full="md:col-span-2 lg:col-span-3";
+  if(!BOOKS.length){ el.innerHTML=noteCard("소장 목록을 불러오지 못했어요. 웹 서버에서 열었는지 확인해 주세요.", full); return; }
+  if(list.length===0){ el.innerHTML=noteCard("📕 <b>‘"+esc(q)+"’</b> 은(는) 우리 학교에 없는 책이에요. 아래에서 신청할 수 있어요.", full); return; }
+  el.innerHTML=list.slice(0,60).map(collectionCard).join("");
+}
+function collectionCard(b){
+  const meta=[b.a,b.p].filter(Boolean).join(" · ");
+  let status;
+  if(b.s==="대출가능") status='<span class="px-2 py-0.5 rounded text-[11px] font-bold border border-outline text-on-surface">대출가능</span>';
+  else if(b.s==="대출중") status='<span class="px-2 py-0.5 rounded text-[11px] font-bold bg-on-surface text-background">대출중</span>';
+  else status='<span class="px-2 py-0.5 rounded text-[11px] font-bold border border-outline text-on-surface">'+(esc(b.s)||"확인필요")+'</span>';
+  return '<div class="bg-[#fcf9f0] p-5 rounded-2xl book-card-shadow border border-outline flex gap-4 transition-soft hover:-translate-y-1"><div class="flex-1">'
+    +'<h4 class="font-headline-md text-headline-md text-on-surface mb-1 line-clamp-2">'+esc(b.t)+'</h4>'
+    +'<p class="text-caption font-caption text-on-surface-variant mb-4">'+esc(meta)+'</p>'
+    +'<div class="flex flex-wrap gap-2 items-center">'
+    +(b.c?'<span class="px-2 py-0.5 rounded text-[11px] font-bold border border-outline text-on-surface">'+esc(b.c)+'</span>':'')
+    +status+'</div></div></div>';
+}
+
+/* 알라딘(서점) 검색 */
+function searchAladin(q){
+  const el=$("aladinList");
+  if(!CONFIG.gasUrl){ el.innerHTML=noteCard("서버(앱스 스크립트)를 연결하면 여기에 서점 검색 결과가 표시됩니다. (README 참고)"); return; }
+  el.innerHTML='<div class="flex items-center justify-center gap-2 py-10 text-outline font-body-md"><span class="material-symbols-outlined animate-spin">progress_activity</span> ‘'+esc(q)+'’ 검색 중…</div>';
+  const my=++reqSeq;
+  api({action:"search", q:q}).then(res=>{
+    if(my!==reqSeq) return;
+    if(!res.ok){ el.innerHTML=noteCard("검색 오류: "+esc(res.error||"")); return; }
+    STORE=res.items||[];
+    if(!STORE.length){ el.innerHTML=noteCard("서점 검색 결과가 없어요. 제목을 다르게 입력해 보세요."); return; }
+    el.innerHTML=STORE.map((it,i)=>aladinCard(it,i)).join("");
+  }).catch(()=>{ if(my!==reqSeq) return; el.innerHTML=noteCard("연결 오류가 발생했어요. 잠시 후 다시 시도해 주세요."); });
+}
+function aladinCard(it,i){
+  const meta=[it.author,it.publisher].filter(Boolean).join(" · ");
+  const price=it.price?('<p class="text-label-md font-label-md text-primary">정가 '+Number(it.price).toLocaleString()+'원</p>'):'';
+  const img=it.cover?('<img class="w-full h-full object-cover" src="'+esc(it.cover)+'" alt=""/>'):'';
+  const link=it.link?('<a class="text-outline hover:text-primary transition-colors flex-shrink-0 ml-2" href="'+esc(it.link)+'" target="_blank" rel="noopener"><span class="material-symbols-outlined text-[20px]">open_in_new</span></a>'):'';
+  return '<div class="bg-[#fcf9f0] rounded-2xl overflow-hidden book-card-shadow border border-outline flex flex-col md:flex-row" data-i="'+i+'">'
+    +'<div class="w-full md:w-32 h-48 md:h-auto bg-surface-container flex-shrink-0">'+img+'</div>'
+    +'<div class="flex-1 p-5 flex flex-col"><div class="flex-1">'
+    +'<div class="flex justify-between items-start mb-2"><h4 class="font-headline-md text-headline-md text-on-surface">'+esc(it.title)+'</h4>'+link+'</div>'
+    +'<p class="text-body-md font-body-md text-on-surface-variant mb-1">'+esc(meta)+'</p>'+price+'</div>'
+    +'<div class="mt-4 flex gap-2"><button class="apply-toggle flex-1 py-3 bg-primary text-on-primary rounded-xl font-label-md text-label-md transition-soft active:scale-95" onclick="toggleApplyForm(this)">도서 신청하기</button></div>'
+    +'<div class="apply-form hidden mt-4 pt-4 border-t border-dashed border-outline-variant space-y-4">'
+    +'<div class="grid grid-cols-4 gap-3">'
+    +'<div class="col-span-1 space-y-2"><label class="text-caption font-caption text-outline">권수</label><input class="ap-copies w-full p-2 bg-surface-container rounded-lg border-none focus:ring-2 focus:ring-primary text-sm" min="1" type="number" value="1"/></div>'
+    +'<div class="col-span-3 space-y-2"><label class="text-caption font-caption text-outline">추가 요청사항 (선택)</label><input class="ap-purpose w-full p-2 bg-surface-container rounded-lg border-none focus:ring-2 focus:ring-primary text-sm" placeholder="추가로 요청할 내용이 있으면 적어주세요" type="text"/></div>'
+    +'</div>'
+    +'<button class="ap-save w-full py-3 bg-secondary text-on-secondary rounded-xl font-label-md text-label-md transition-soft flex items-center justify-center gap-2" onclick="saveApplication(this)"><span class="material-symbols-outlined text-[18px]">save</span> 신청 저장</button>'
+    +'</div></div></div>';
+}
+function toggleApplyForm(btn){
+  const card=btn.closest("[data-i]"); const form=card.querySelector(".apply-form");
+  const hidden=form.classList.toggle("hidden");
+  btn.textContent = hidden ? "도서 신청하기" : "닫기";
+  if(!hidden) card.querySelector(".ap-purpose").focus();
+}
+function saveApplication(btn){
+  const card=btn.closest("[data-i]"); const it=STORE[+card.getAttribute("data-i")]; if(!it) return;
+  const copies=(card.querySelector(".ap-copies").value||"1").trim();
+  const purpose=card.querySelector(".ap-purpose").value.trim();
+  btn.disabled=true; btn.innerHTML='저장 중…';
+  api({ action:"save", hakbeon:userData.hakbeon, name:userData.name,
+    title:it.title, author:it.author, publisher:it.publisher, pubDate:it.pubDate,
+    isbn13:it.isbn13, price:it.price, link:it.link, cover:it.cover, copies:copies, purpose:purpose
+  }).then(res=>{
+    if(res.ok){
+      btn.innerHTML='<span class="material-symbols-outlined text-[18px]">check_circle</span> 신청 완료';
+      btn.classList.remove("bg-secondary","text-on-secondary");
+      btn.classList.add("bg-surface-container-highest","text-outline");
+      const tg=card.querySelector(".apply-toggle"); if(tg){ tg.disabled=true; tg.classList.add("opacity-50"); }
+      showToast("신청 완료! 이벤트에 응모되었어요.");
+      if(res.win) showWinner(res);
+    }else{ showToast(res.error||"저장에 실패했어요.","error"); btn.disabled=false; btn.innerHTML='<span class="material-symbols-outlined text-[18px]">save</span> 신청 저장'; }
+  }).catch(()=>{ showToast("연결 오류로 저장하지 못했어요.","error"); btn.disabled=false; btn.innerHTML='<span class="material-symbols-outlined text-[18px]">save</span> 신청 저장'; });
+}
+
+/* 당첨 카드 */
+function showWinner(res){
+  $("winRank").textContent=(res.rank||"")+"등";
+  $("winUser").textContent=(res.hakbeon||userData.hakbeon)+" · "+(res.name||userData.name);
+  $("winNo").textContent="응모번호 #"+(res.order||"");
+  $("winning-overlay").classList.remove("hidden");
+}
+function closeOverlay(){ $("winning-overlay").classList.add("hidden"); }
+
+/* 서버 통신 */
+function api(payload){
+  return fetch(CONFIG.gasUrl,{ method:"POST", redirect:"follow",
+    headers:{"Content-Type":"text/plain;charset=utf-8"}, body:JSON.stringify(payload) }).then(r=>r.json());
+}
+
+/* 검색 입력 */
+$("searchInput").addEventListener("input", ()=>{ clearTimeout(timer); timer=setTimeout(doSearch, 400); });
+
+/* 인트로 일러스트 (미색 배경으로 처리된 라인 드로잉) */
+function buildShelfArt(){
+  var el=document.getElementById('shelfArt'); if(!el) return;
+  el.innerHTML='<img src="intro.png" alt="책장 일러스트" '
+    +'style="display:block;width:100%;max-width:440px;margin:0 auto">';
+}
+buildShelfArt();
+</script>
+</body></html>
